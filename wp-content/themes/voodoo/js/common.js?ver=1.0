@@ -1,0 +1,46 @@
+/**
+ * Theme functions file.
+ *
+ * Contains handlers for navigation and widget area.
+ */
+
+(function( $ ) {
+	// Variables and DOM Caching.
+	var siteHeader     = $( '.site-header' );
+	var menuToggle     = siteHeader.find( '.menu-toggle' );
+	var mainNavigation = siteHeader.find( '.main-navigation' );
+	var itemHasChildren = siteHeader.find( '.main-navigation li.menu-item-has-children > a.show-child' );
+
+	// Fire on document ready.
+	$( document ).ready( function() {
+
+		menuToggle.attr( 'aria-expanded', 'false' );
+
+		menuToggle.on( 'click', function( event ) {
+			event.preventDefault();
+
+			mainNavigation.toggleClass( 'toggled-on' );
+
+			$( this ).attr( 'aria-expanded', mainNavigation.hasClass( 'toggled-on' ) );
+		});
+
+		itemHasChildren.on( 'click', function( event ) {
+			if ( menuToggle.is( ':visible' ) ) {
+				event.preventDefault();
+
+				if ( $(this).parent().children( '.sub-menu' ).hasClass( 'toggled-on' ) ) {
+					$(this).parent().children( '.sub-menu' ).removeClass( 'toggled-on' );
+
+					$(this).parent().children( 'a.show-child' ).children( 'i' ).addClass( 'icon-angle-down' );
+					$(this).parent().children( 'a.show-child' ).children( 'i' ).removeClass( 'icon-angle-up' );
+				} else {
+					$(this).parent().children( '.sub-menu' ).addClass( 'toggled-on' );
+
+					$(this).parent().children( 'a.show-child' ).children( 'i' ).removeClass( 'icon-angle-down' );
+					$(this).parent().children( 'a.show-child' ).children( 'i' ).addClass( 'icon-angle-up' );
+				}
+			}
+		});
+	});
+
+})( jQuery );
